@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:professional_profile/presentation/widgets/common/animated_fade_in.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -14,13 +13,28 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedFadeIn(
-      delay: const Duration(milliseconds: 200),
-      child: Text(
-        title,
-        style: GoogleFonts.poppins(
-            fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: color ?? theme.primaryColor,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          width: 60,
+          height: 4,
+          decoration: BoxDecoration(
+            color: color ?? theme.primaryColor,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+      ],
     );
   }
 }

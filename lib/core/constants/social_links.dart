@@ -1,5 +1,5 @@
 class SocialLinks {
-  static const github = 'https://github.com/yourusername';
-  static const linkedin = 'https://linkedin.com/in/yourusername';
-  static const twitter = 'https://twitter.com/yourusername';
+  static const String github = 'https://github.com/YousefHageb';
+  static const String linkedin = 'https://www.linkedin.com/in/yousef-hageb/';
+  static const String twitter = 'https://twitter.com/yousef_hageb';
 }

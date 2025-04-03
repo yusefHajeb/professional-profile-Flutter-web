@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:professional_profile/config/responsive_layout_config.dart';
 import 'package:professional_profile/presentation/widgets/common/animated_fade_in.dart';
 
-import '../common/section_title.dart';
 import '../social/social_links_section.dart';
 
 class ProfileImage extends StatelessWidget {
@@ -18,9 +17,10 @@ class ProfileImage extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 10,
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 5,
+              blurRadius: 15,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
@@ -46,221 +46,244 @@ class ProfileSection extends StatelessWidget {
   }) : super(key: key);
 
   @override
-/*************  ✨ Codeium Command ⭐  *************/
-  /// Builds the profile section based on the current screen width.
-  ///
-  /// On mobile and tablet devices, this widget will display the profile section
-  /// vertically, with the profile image on top and the name and bio below it.
-  ///
-  /// On desktop devices, this widget will display the profile section horizontally,
-  /// with the profile image on the left and the name and bio on the right.
-/******  a8c74fdb-6d4b-4a28-af40-6508c6ec962f  *******/ Widget build(
-      BuildContext context) {
+  Widget build(BuildContext context) {
     ResponsiveLayoutConfig().init(context);
     final theme = Theme.of(context);
-    return Center(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xffad9460),
-              Color(0xff605f5e),
-              Color(0xffad9460),
-            ],
-          ),
+
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xffad9460),
+            const Color(0xff605f5e),
+            const Color(0xffad9460).withOpacity(0.8),
+          ],
         ),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth < 800) {
-              // Mobile/Tablet layout
-              return _buildVerticalLayout(theme);
-            } else {
-              // Desktop layout
-              return _buildHorizontalLayout(theme);
-            }
-          },
-        ),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 800) {
+            // Mobile/Tablet layout
+            return _buildVerticalLayout(theme);
+          } else {
+            // Desktop layout
+            return _buildHorizontalLayout(theme);
+          }
+        },
       ),
     );
   }
 
   Widget _buildVerticalLayout(ThemeData theme) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildProfileImage(size: 650),
-        const SizedBox(height: 24),
-        _buildNameText(theme, fontSize: 28),
-        const SizedBox(height: 16),
-        _buildBioText(theme, textAlign: TextAlign.center),
-        const SizedBox(height: 30),
-        SocialLinksSection(
-          isDesctop: true,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildProfileImage(size: 300),
+          const SizedBox(height: 30),
+          _buildNameText(theme, fontSize: 28),
+          const SizedBox(height: 8),
+          _buildRoleText(theme),
+          const SizedBox(height: 20),
+          _buildBioText(theme, textAlign: TextAlign.center),
+          const SizedBox(height: 30),
+          _buildCTAButton(),
+          const SizedBox(height: 30),
+          SocialLinksSection(
+            isDesctop: true,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildHorizontalLayout(ThemeData theme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildProfileImage(size: ResponsiveLayoutConfig.screenWidth / 1.7),
-        const SizedBox(width: 48),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildNameText(theme, fontSize: 32),
-              const SizedBox(height: 16),
-              _buildBioText(theme),
-              const SizedBox(height: 16),
-              SocialLinksSection(
-                isDesctop: true,
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildProfileImage(size: 400),
+          const SizedBox(width: 60),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildNameText(theme, fontSize: 32),
+                const SizedBox(height: 8),
+                _buildRoleText(theme),
+                const SizedBox(height: 20),
+                _buildBioText(theme),
+                const SizedBox(height: 30),
+                Row(
+                  children: [
+                    _buildCTAButton(),
+                    const SizedBox(width: 20),
+                    SocialLinksSection(
+                      isDesctop: true,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildProfileImage({required double size}) {
-    return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color: const Color(0xffad9460).withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
+    return AnimatedFadeIn(
+      delay: const Duration(milliseconds: 300),
       child: Container(
-        padding: const EdgeInsets.all(3),
+        width: size,
         decoration: BoxDecoration(
-          color: Color(0xff605f5e).withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          width: size,
-          // height: size,
-          decoration: BoxDecoration(
-            color: Color(0xff605f5e).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-            // border: Border.all(
-            //   width: 2,
-            //   color: const Color(0xFFE5E5EA),
-            // ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.asset(
-              imagePath,
-              // fit: BoxFit.cover,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              spreadRadius: 5,
+              blurRadius: 20,
+              offset: const Offset(0, 10),
             ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              // Main image
+              Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+              ),
+              // Gradient overlay
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.3),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
-    // backgroundImage: AssetImage(imagePath),
-    // backgroundColor: Colors.transparent,
   }
 
   Widget _buildNameText(ThemeData theme, {required double fontSize}) {
-    return SectionTitle(
-      color: theme.colorScheme.onPrimary.withOpacity(0.8),
-      title: 'Yousef Hageb',
+    return AnimatedFadeIn(
+      delay: const Duration(milliseconds: 400),
+      child: Text(
+        'Yousef Hageb',
+        style: GoogleFonts.poppins(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          letterSpacing: 1.2,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRoleText(ThemeData theme) {
+    return AnimatedFadeIn(
+      delay: const Duration(milliseconds: 500),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.secondary.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: theme.colorScheme.secondary,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          'Flutter Developer',
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: theme.colorScheme.secondary,
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildBioText(ThemeData theme,
       {TextAlign textAlign = TextAlign.left}) {
-    return ResponsiveLayoutConfig.responsive(
-      mobile: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+    return AnimatedFadeIn(
+      delay: const Duration(milliseconds: 600),
+      child: Column(
+        crossAxisAlignment: textAlign == TextAlign.center
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
         children: [
           Text(
-            'As Flutter Develper',
+            'Professional Mobile App Developer',
             style: GoogleFonts.poppins(
-              fontSize: 29,
+              fontSize: 22,
               height: 1.5,
-              fontWeight: FontWeight.bold,
-              // color: Colors.yellow.withOpacity(0.8),
-              color: theme.colorScheme.secondary,
+              fontWeight: FontWeight.w600,
+              color: Colors.white.withOpacity(0.9),
             ),
           ),
-          _bioText(textAlign),
-        ],
-      ),
-      desktop: Wrap(
-        spacing: 10,
-        children: [
+          const SizedBox(height: 12),
           Text(
-            'A Flutter Developer ',
+            bio,
             style: GoogleFonts.poppins(
-              fontSize: 30,
-              height: 1.5,
-              color: theme.colorScheme.secondary,
+              fontSize: 16,
+              height: 1.6,
+              color: Colors.white.withOpacity(0.8),
             ),
-          ),
-          Flexible(
-            child: Text(
-              bio,
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                height: 1.5,
-                color: Colors.white,
-              ),
-              textAlign: textAlign,
-            ),
+            textAlign: textAlign,
           ),
         ],
       ),
-      tablet: Column(children: [
-        Text(
-          'A Flutter Developer ',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            height: 1.5,
-            color: Colors.yellow.withOpacity(0.8),
-            // color: theme.colorScheme.secondary,
-          ),
-        ),
-        Text(bio,
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              height: 1.5,
-              color: Colors.white,
-
-              // color: theme.textTheme.bodyLarge?.color?.withOpacity(0.8),
-            ))
-      ]),
-      // _bioText(textAlign),
     );
   }
 
-  Flexible _bioText(TextAlign textAlign) {
-    return Flexible(
-      child: Text(
-        bio,
-        style: GoogleFonts.poppins(
-          fontSize: 18,
-          height: 1.5,
-          color: Colors.white,
-          // color: theme.textTheme.bodyLarge?.color?.withOpacity(0.8),
+  Widget _buildCTAButton() {
+    return AnimatedFadeIn(
+      delay: const Duration(milliseconds: 700),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xffad9460),
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          elevation: 5,
         ),
-        textAlign: textAlign,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.download_rounded),
+            const SizedBox(width: 8),
+            Text(
+              'Download CV',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

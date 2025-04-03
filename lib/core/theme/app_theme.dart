@@ -1,152 +1,122 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'app_color_extention.dart';
-
 class AppTheme {
-  static final _lightAppColors = AppColorsExtension(
-    primary: const Color(0xffad9460),
-    onPrimary: const Color(0xff605f5e),
-    secondary: const Color(0xffad9460),
-    onSecondary: const Color(0xff605f5e),
-    error: const Color(0xffcf6679),
-    onError: const Color(0xff605f5e),
-    background: const Color(0xffad9460),
-    onBackground: const Color(0xff605f5e),
-    surface: const Color(0xffad9460),
-    onSurface: const Color(0xff605f5e),
-    outline: const Color(0xff605f5e),
-    onOutline: const Color(0xffad9460),
-    outlineVariant: const Color(0xffad9460),
-    shadow: const Color(0xff605f5e),
-    scrim: const Color(0xffad9460),
-    inverseSurface: const Color(0xff605f5e),
-    inverseOnSurface: const Color(0xffad9460),
-    scaffoldBackground: const Color(0xffad9460),
-    bottomAppBarColor: const Color(0xffad9460),
-    systemOverlay0: const Color(0xffad9460),
-    systemOverlay1: const Color(0xffad9460),
-    systemOverlay2: const Color(0xffad9460),
-  );
+  static ThemeData get lightTheme {
+    const primaryColor = Color(0xffad9460); // Modern blue
+    const secondaryColor = const Color(0xff605f5e);
 
-  static ThemeData get lightTheme => ThemeData(
-        useMaterial3: true,
-        primaryColor: _lightAppColors.primary,
-        primaryColorDark: _lightAppColors.onPrimary,
-        scaffoldBackgroundColor: _lightAppColors.scaffoldBackground,
-        hintColor: _lightAppColors.outline,
-        focusColor: _lightAppColors.outline,
-        hoverColor: _lightAppColors.outline,
-        canvasColor: _lightAppColors.surface,
-        indicatorColor: _lightAppColors.outline,
-        primaryColorLight: _lightAppColors.primary,
-        highlightColor: _lightAppColors.outline,
-        splashColor: _lightAppColors.outline,
-        appBarTheme: AppBarTheme(
-          foregroundColor: _lightAppColors.onSurface,
-          centerTitle: true,
-          backgroundColor: _lightAppColors.primary,
-          elevation: 0,
-        ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: _lightAppColors.primary,
-          background: _lightAppColors.background,
-          outline: _lightAppColors.outline,
-          inversePrimary: _lightAppColors.inverseSurface,
-          inverseSurface: _lightAppColors.inverseSurface,
-          brightness: Brightness.light,
-          primary: _lightAppColors.primary,
-          onPrimary: _lightAppColors.onPrimary,
-          secondary: _lightAppColors.secondary,
-          onSecondary: _lightAppColors.onSecondary,
-          surface: _lightAppColors.surface,
-          onSurface: _lightAppColors.onSurface,
-        ),
-        textTheme: TextTheme(
-          bodyLarge: GoogleFonts.poppins(
-            fontSize: 18,
-            height: 1.5,
-            color: _lightAppColors.onBackground,
-          ),
-          bodyMedium: GoogleFonts.poppins(
-            fontSize: 16,
-            height: 1.5,
-            color: _lightAppColors.onBackground,
-          ),
-          bodySmall: GoogleFonts.poppins(
-            fontSize: 14,
-            height: 1.5,
-            color: _lightAppColors.onBackground,
-          ),
-          headlineLarge: GoogleFonts.poppins(
-            fontSize: 25,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          headlineMedium: GoogleFonts.poppins(
-            fontSize: 28,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          headlineSmall: GoogleFonts.poppins(
-            fontSize: 24,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          labelLarge: GoogleFonts.poppins(
-            fontSize: 20,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          labelMedium: GoogleFonts.poppins(
-            fontSize: 18,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          labelSmall: GoogleFonts.poppins(
-            fontSize: 16,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          titleLarge: GoogleFonts.poppins(
-            fontSize: 24,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          titleMedium: GoogleFonts.poppins(
-            fontSize: 20,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          titleSmall: GoogleFonts.poppins(
-            fontSize: 18,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          displayLarge: GoogleFonts.poppins(
-            fontSize: 32,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          displayMedium: GoogleFonts.poppins(
-            fontSize: 28,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-          displaySmall: GoogleFonts.poppins(
-            fontSize: 24,
-            height: 1.5,
-            color: _lightAppColors.onSurface,
-          ),
-        ),
-        cardTheme: CardTheme(
-          elevation: 2,
-          shadowColor: _lightAppColors.shadow,
-          surfaceTintColor: _lightAppColors.surface,
+    return ThemeData(
+      primaryColor: primaryColor,
+      colorScheme: const ColorScheme.light(
+        primary: primaryColor,
+        secondary: secondaryColor,
+        surface: Colors.white,
+        background: Color(0xFFF8FAFC),
+        error: Color(0xFFDC2626),
+      ),
+      scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+      textTheme: GoogleFonts.poppinsTextTheme(),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: _lightAppColors.outline),
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
-      );
+      ),
+      cardTheme: CardTheme(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        color: Colors.white,
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        titleTextStyle: GoogleFonts.poppins(
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      iconTheme: const IconThemeData(
+        color: primaryColor,
+        size: 24,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primaryColor),
+        ),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: Color(0xFFE2E8F0),
+        thickness: 1,
+        space: 32,
+      ),
+    );
+  }
+
+  static ThemeData get darkTheme {
+    const primaryColor = Color(0xFF60A5FA); // Lighter blue for dark theme
+    const secondaryColor = Color(0xFF93C5FD);
+
+    return ThemeData.dark().copyWith(
+      primaryColor: primaryColor,
+      colorScheme: const ColorScheme.dark(
+        primary: primaryColor,
+        secondary: secondaryColor,
+        surface: Color(0xFF1E293B),
+        background: Color(0xFF0F172A),
+        error: Color(0xFFFCA5A5),
+      ),
+      scaffoldBackgroundColor: const Color(0xFF0F172A),
+      cardTheme: CardTheme(
+        color: const Color(0xFF1E293B),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: const Color(0xFF1E293B),
+        elevation: 0,
+        titleTextStyle: GoogleFonts.poppins(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      iconTheme: const IconThemeData(
+        color: primaryColor,
+        size: 24,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFF1E293B),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primaryColor),
+        ),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: Color(0xFF334155),
+        thickness: 1,
+        space: 32,
+      ),
+    );
+  }
 }

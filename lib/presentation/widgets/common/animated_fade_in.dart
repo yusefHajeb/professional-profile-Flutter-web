@@ -3,38 +3,58 @@ import 'package:flutter/material.dart';
 class AnimatedFadeIn extends StatefulWidget {
   final Widget child;
   final Duration delay;
-  final Duration duration;
 
   const AnimatedFadeIn({
     super.key,
     required this.child,
-    this.delay = Duration.zero,
-    this.duration = const Duration(milliseconds: 500),
+    required this.delay,
   });
 
   @override
   State<AnimatedFadeIn> createState() => _AnimatedFadeInState();
 }
 
-class _AnimatedFadeInState extends State<AnimatedFadeIn> {
-  bool _isVisible = false;
+class _AnimatedFadeInState extends State<AnimatedFadeIn>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    );
+
     Future.delayed(widget.delay, () {
       if (mounted) {
-        setState(() => _isVisible = true);
+        _controller.forward();
       }
     });
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: _isVisible ? 1.0 : 0.0,
-      duration: widget.duration,
-      child: widget.child,
+    return FadeTransition(
+      opacity: _animation,
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 0.2),
+          end: Offset.zero,
+        ).animate(_animation),
+        child: widget.child,
+      ),
     );
   }
 }

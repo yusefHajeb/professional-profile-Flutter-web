@@ -7,31 +7,46 @@ class ServiceRepositoryImpl implements ServiceRepository {
     return const [
       Service(
         id: '1',
-        title: 'Web Development',
+        title: 'Flutter Development',
         description:
-            'Modern and responsive web applications using Flutter and React',
-        iconName: 'web',
+            'Expert in building high-performance, cross-platform mobile applications using Flutter. '
+            'Specializing in creating beautiful, responsive UIs and implementing complex business logic '
+            'with clean architecture principles.',
+        iconName: 'flutter_dash',
       ),
       Service(
         id: '2',
-        title: 'Mobile Development',
+        title: 'Full-Stack Web Development',
         description:
-            'Cross-platform mobile applications with Flutter and React Native',
-        iconName: 'mobile_friendly',
+            'End-to-end web application development using modern technologies like React, Node.js, and MongoDB. '
+            'Focus on creating scalable, secure, and maintainable solutions with excellent user experience.',
+        iconName: 'web',
       ),
       Service(
         id: '3',
-        title: 'Backend Development',
+        title: 'API Development & Integration',
         description:
-            'Scalable and secure backend solutions using Node.js and Firebase',
-        iconName: 'cloud',
+            'Design and implementation of RESTful APIs and microservices. '
+            'Experience with third-party API integration, authentication, and real-time data synchronization '
+            'using Firebase and WebSocket.',
+        iconName: 'api',
       ),
       Service(
         id: '4',
         title: 'UI/UX Design',
         description:
-            'Beautiful and intuitive user interfaces with modern design principles',
+            'Creating intuitive and engaging user interfaces with modern design principles. '
+            'Expertise in responsive design, animation, and accessibility standards '
+            'to deliver exceptional user experiences.',
         iconName: 'design_services',
+      ),
+      Service(
+        id: '5',
+        title: 'Performance Optimization',
+        description:
+            'Optimization of application performance through code analysis, profiling, and implementation '
+            'of best practices. Experience in reducing load times and improving app responsiveness.',
+        iconName: 'speed',
       ),
     ];
   }

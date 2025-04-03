@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:professional_profile/presentation/widgets/common/hover_scale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SocialIconButton extends StatelessWidget {
+class SocialIconButton extends StatefulWidget {
   final IconData icon;
   final String url;
   final String label;
@@ -14,24 +13,63 @@ class SocialIconButton extends StatelessWidget {
     required this.label,
   });
 
+  @override
+  State<SocialIconButton> createState() => _SocialIconButtonState();
+}
+
+class _SocialIconButtonState extends State<SocialIconButton> {
+  bool isHovered = false;
+
   Future<void> _launchUrl() async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+    final Uri url = Uri.parse(widget.url);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch ${widget.url}');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return HoverScale(
-      scale: 1.2,
-      child: Tooltip(
-        message: label,
-        child: IconButton(
-          icon: Icon(icon),
-          color: Colors.white,
-          iconSize: 32,
-          onPressed: _launchUrl,
+    final theme = Theme.of(context);
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: GestureDetector(
+        onTap: _launchUrl,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isHovered ? theme.primaryColor : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: isHovered
+                    ? theme.primaryColor.withOpacity(0.3)
+                    : Colors.black.withOpacity(0.1),
+                blurRadius: isHovered ? 16 : 8,
+                spreadRadius: isHovered ? 2 : 0,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                widget.icon,
+                size: 32,
+                color: isHovered ? Colors.white : theme.primaryColor,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.label,
+                style: TextStyle(
+                  color: isHovered ? Colors.white : Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,96 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:professional_profile/domain/entities/service.dart';
-import 'package:professional_profile/presentation/widgets/common/hover_scale.dart';
 
-class ServiceCard extends StatelessWidget {
+class ServiceCard extends StatefulWidget {
   final Service service;
-  final VoidCallback? onTap;
 
-  const ServiceCard({
-    super.key,
-    required this.service,
-    this.onTap,
-  });
+  const ServiceCard({super.key, required this.service});
 
-  IconData _getIconData(String iconName) {
-    const icons = {
-      'web': Icons.web,
-      'mobile_friendly': Icons.mobile_friendly,
-      'cloud': Icons.cloud,
-      'design_services': Icons.design_services,
-    };
-    return icons[iconName] ?? Icons.work;
-  }
+  @override
+  State<ServiceCard> createState() => _ServiceCardState();
+}
+
+class _ServiceCardState extends State<ServiceCard> {
+  bool isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return HoverScale(
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-        ),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: theme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    _getIconData(service.iconName),
-                    size: 44,
-                    color: theme.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Flexible(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    // mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        service.title,
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: theme.textTheme.titleLarge?.color,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 14),
-                      Text(
-                        service.description,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          height: 1.5,
-                          color: theme.textTheme.bodyMedium?.color
-                              ?.withOpacity(0.8),
-                        ),
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 4,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          border: Border.all(
+            color:
+                isHovered ? theme.primaryColor : Colors.grey.withOpacity(0.2),
+            width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: isHovered
+                  ? theme.primaryColor.withOpacity(0.1)
+                  : Colors.black.withOpacity(0.05),
+              blurRadius: isHovered ? 20 : 10,
+              spreadRadius: isHovered ? 5 : 1,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                _getIconData(widget.service.iconName),
+                color: theme.primaryColor,
+                size: 32,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              widget.service.title,
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: theme.primaryColor,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              widget.service.description,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                height: 1.6,
+                color: Colors.grey[800],
+              ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  IconData _getIconData(String iconName) {
+    switch (iconName) {
+      case 'flutter_dash':
+        return Icons.flutter_dash;
+      case 'web':
+        return Icons.web;
+      case 'api':
+        return Icons.api;
+      case 'design_services':
+        return Icons.design_services;
+      case 'speed':
+        return Icons.speed;
+      default:
+        return Icons.code;
+    }
   }
 }

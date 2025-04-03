@@ -1,75 +1,146 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:professional_profile/domain/entities/project.dart';
-import 'package:professional_profile/presentation/widgets/common/hover_scale.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ProjectCard extends StatelessWidget {
+class ProjectCard extends StatefulWidget {
   final Project project;
 
   const ProjectCard({super.key, required this.project});
 
   @override
+  State<ProjectCard> createState() => _ProjectCardState();
+}
+
+class _ProjectCardState extends State<ProjectCard> {
+  bool isHovered = false;
+
+  Future<void> _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return HoverScale(
-      child: Card(
-        child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.start,
+    final theme = Theme.of(context);
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: isHovered
+                  ? theme.primaryColor.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.1),
+              blurRadius: isHovered ? 20 : 10,
+              spreadRadius: isHovered ? 5 : 0,
+            ),
+          ],
+        ),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              fit: FlexFit.loose,
-              flex: 3,
-              child: ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.network(
-                  project.imageUrl,
-                  // height: ResponsiveLayoutConfig.screenHeight / 5,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(16)),
+              child: Stack(
+                children: [
+                  Image.asset(
+                    widget.project.imageUrl,
+                    fit: BoxFit.cover,
+                    height: 200,
+                    width: double.infinity,
+                  ),
+                  if (isHovered)
+                    Container(
+                      height: 200,
+                      width: double.infinity,
+                      color: theme.primaryColor.withOpacity(0.8),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (widget.project.githubUrl != null)
+                              IconButton(
+                                icon:
+                                    const Icon(Icons.code, color: Colors.white),
+                                onPressed: () =>
+                                    _launchUrl(widget.project.githubUrl!),
+                                tooltip: 'View Code',
+                              ),
+                            if (widget.project.liveUrl != null)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: IconButton(
+                                  icon: const Icon(Icons.launch,
+                                      color: Colors.white),
+                                  onPressed: () =>
+                                      _launchUrl(widget.project.liveUrl!),
+                                  tooltip: 'Live Demo',
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
-            Flexible(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      project.title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.project.title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: theme.primaryColor,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      project.description,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                      ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    widget.project.description,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      height: 1.6,
+                      color: Colors.grey[700],
                     ),
-                    // const SizedBox(height: 16),
-                    // Wrap(
-                    //   spacing: 8,
-                    //   runSpacing: 8,
-                    //   children: project.technologies
-                    //       .map((tech) => Chip(
-                    //             label: Text(tech),
-                    //             backgroundColor: Theme.of(context)
-                    //                 .primaryColor
-                    //                 .withOpacity(0.1),
-                    //           ))
-                    //       .toList(),
-                    // ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: widget.project.technologies
+                        .map((tech) => Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: theme.primaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: theme.primaryColor.withOpacity(0.2),
+                                ),
+                              ),
+                              child: Text(
+                                tech,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ],
               ),
             ),
           ],
