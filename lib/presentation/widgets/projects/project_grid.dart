@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:professional_profile/core/utils/custom_page_route.dart';
 import 'package:professional_profile/core/utils/responsive_utils.dart';
 import 'package:professional_profile/domain/entities/project.dart';
 import 'package:professional_profile/presentation/widgets/projects/project_card.dart';
+import 'package:professional_profile/presentation/widgets/projects/project_details.dart';
 
 class ProjectGrid extends StatelessWidget {
   final List<Project> projects;
@@ -20,11 +22,23 @@ class ProjectGrid extends StatelessWidget {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         childAspectRatio: childAspectRatio,
-        crossAxisSpacing: 24,
-        mainAxisSpacing: 24,
+        crossAxisSpacing: 13,
+        mainAxisSpacing: 12,
       ),
       itemCount: projects.length,
-      itemBuilder: (context, i) => ProjectCard(project: projects[i]),
+      itemBuilder: (context, i) => MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              CustomPageRoute(
+                child: ProjectDetails(project: projects[i]),
+              ),
+            );
+          },
+          child: ProjectCard(project: projects[i]),
+        ),
+      ),
     );
   }
 }

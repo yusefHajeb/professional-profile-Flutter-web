@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:professional_profile/presentation/bloc/experience_bloc.dart';
 import 'package:professional_profile/presentation/bloc/projects_bloc.dart';
 import 'package:professional_profile/presentation/bloc/services_bloc.dart';
 import 'package:professional_profile/presentation/widgets/header_section.dart';
@@ -126,6 +127,10 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<ServicesBloc>(
           create: (context) => ServicesBloc()..add(LoadServices()),
         ),
+        BlocProvider(
+          create: (context) => ExperienceBloc()..add(LoadExperiences()),
+          child: const ExperienceSection(),
+        ),
       ],
       child: Scaffold(
         key: scaffoldKey,
@@ -157,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                 SliverToBoxAdapter(
                   child: KeyedSubtree(
                     key: experienceKey,
-                    child: const ExperienceSection(),
+                    child: ExperienceSection(),
                   ),
                 ),
                 SliverToBoxAdapter(

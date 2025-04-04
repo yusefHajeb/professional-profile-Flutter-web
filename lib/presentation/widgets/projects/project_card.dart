@@ -54,12 +54,12 @@ class _ProjectCardState extends State<ProjectCard> {
                   Image.asset(
                     widget.project.imageUrl,
                     fit: BoxFit.cover,
-                    height: 200,
+                    height: 160,
                     width: double.infinity,
                   ),
                   if (isHovered)
                     Container(
-                      height: 200,
+                      height: 160,
                       width: double.infinity,
                       color: theme.primaryColor.withOpacity(0.8),
                       child: Center(
@@ -100,7 +100,7 @@ class _ProjectCardState extends State<ProjectCard> {
                   Text(
                     widget.project.title,
                     style: GoogleFonts.poppins(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: theme.primaryColor,
                     ),
@@ -109,14 +109,14 @@ class _ProjectCardState extends State<ProjectCard> {
                   Text(
                     widget.project.description,
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 14,
                       height: 1.6,
                       color: Colors.grey[700],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   Wrap(
-                    spacing: 8,
+                    spacing: 7,
                     runSpacing: 8,
                     children: widget.project.technologies
                         .map((tech) => Container(
