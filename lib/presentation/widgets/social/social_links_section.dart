@@ -8,15 +8,15 @@ import 'package:professional_profile/presentation/widgets/social/social_icon_but
 
 // ignore: must_be_immutable
 class SocialLinksSection extends StatelessWidget {
-  bool? isDesctop;
-  SocialLinksSection({super.key, this.isDesctop});
+  bool? isDesktop;
+  SocialLinksSection({super.key, this.isDesktop});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(32.0),
-      color: isDesctop == null ? Colors.grey[900] : null,
+      color: isDesktop == null ? Colors.grey[900] : null,
       child: const Column(
         children: [
           SectionTitle(

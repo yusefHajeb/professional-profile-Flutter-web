@@ -50,18 +50,16 @@ class ExperienceCard extends StatelessWidget {
             style: Theme.of(context).textTheme.titleSmall,
           ),
           const SizedBox(height: 8),
-          ...position.responsibilities
-              .map((responsibility) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('• '),
-                        Expanded(child: Text(responsibility)),
-                      ],
-                    ),
-                  ))
-              .toList(),
+          ...position.responsibilities.map((responsibility) => Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('• '),
+                    Expanded(child: Text(responsibility)),
+                  ],
+                ),
+              )),
         ],
       ),
     );

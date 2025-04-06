@@ -5,7 +5,7 @@ import 'package:professional_profile/presentation/widgets/common/section_title.d
 import 'package:professional_profile/presentation/widgets/experience/experience_card.dart';
 
 class ExperienceSection extends StatelessWidget {
-  const ExperienceSection({Key? key});
+  const ExperienceSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ExperienceSection extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionTitle(title: 'Experience'),
+              const Center(child: SectionTitle(title: 'Experience')),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

@@ -94,7 +94,7 @@ class ProfileSection extends StatelessWidget {
           _buildCTAButton(),
           const SizedBox(height: 30),
           SocialLinksSection(
-            isDesctop: true,
+            isDesktop: true,
           ),
         ],
       ),
@@ -126,7 +126,7 @@ class ProfileSection extends StatelessWidget {
                     _buildCTAButton(),
                     const SizedBox(width: 20),
                     SocialLinksSection(
-                      isDesctop: true,
+                      isDesktop: true,
                     ),
                   ],
                 ),

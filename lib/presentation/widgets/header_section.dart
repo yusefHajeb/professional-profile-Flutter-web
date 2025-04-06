@@ -71,7 +71,7 @@ class HeaderSection extends StatelessWidget {
           SizedBox(
             width: isWideScreen ? 800 : null,
             child: Text(
-              'Experienced Full Stack Developer with a proven track record in Flutter and Web development. '
+              'Experienced Full Stack Developer with a proven track record in  Flutter development. '
               'Passionate about creating innovative, user-centric solutions that combine beautiful design with robust functionality. '
               'Specialized in building scalable applications using modern technologies and best practices.',
               style: GoogleFonts.poppins(
@@ -90,10 +90,10 @@ class HeaderSection extends StatelessWidget {
             children: [
               _buildSkillChip(context, 'Flutter'),
               _buildSkillChip(context, 'Dart'),
-              _buildSkillChip(context, 'React'),
-              _buildSkillChip(context, 'Node.js'),
+              _buildSkillChip(context, 'Laravel'),
+              _buildSkillChip(context, 'MySql'),
               _buildSkillChip(context, 'Firebase'),
-              _buildSkillChip(context, 'MongoDB'),
+              _buildSkillChip(context, 'Sqlite'),
             ],
           ),
         ],
