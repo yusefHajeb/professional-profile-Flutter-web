@@ -21,6 +21,44 @@ class _ProjectCardState extends State<ProjectCard> {
     }
   }
 
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  label,
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -30,18 +68,30 @@ class _ProjectCardState extends State<ProjectCard> {
       onExit: (_) => setState(() => isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
+        transform: Matrix4.identity()..scale(isHovered ? 1.03 : 1.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              theme.cardColor,
+              theme.cardColor.withOpacity(0.9),
+            ],
+          ),
           boxShadow: [
             BoxShadow(
-              color: isHovered
-                  ? theme.primaryColor.withOpacity(0.2)
-                  : Colors.black.withOpacity(0.1),
+              color: theme.primaryColor.withOpacity(isHovered ? 0.2 : 0.1),
               blurRadius: isHovered ? 20 : 10,
               spreadRadius: isHovered ? 5 : 0,
+              offset: const Offset(0, 4),
             ),
           ],
+          border: Border.all(
+            color: theme.primaryColor.withOpacity(isHovered ? 0.2 : 0.05),
+            width: 1,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,34 +108,45 @@ class _ProjectCardState extends State<ProjectCard> {
                     width: double.infinity,
                   ),
                   if (isHovered)
-                    Container(
-                      height: 160,
-                      width: double.infinity,
-                      color: theme.primaryColor.withOpacity(0.8),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (widget.project.githubUrl != null)
-                              IconButton(
-                                icon:
-                                    const Icon(Icons.code, color: Colors.white),
-                                onPressed: () =>
-                                    _launchUrl(widget.project.githubUrl!),
-                                tooltip: 'View Code',
-                              ),
-                            if (widget.project.liveUrl != null)
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16),
-                                child: IconButton(
-                                  icon: const Icon(Icons.launch,
-                                      color: Colors.white),
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: isHovered ? 1.0 : 0.0,
+                      child: Container(
+                        height: 160,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              theme.primaryColor.withOpacity(0.9),
+                              theme.primaryColor.withOpacity(0.7),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (widget.project.githubUrl != null)
+                                _buildActionButton(
+                                  icon: Icons.code,
+                                  label: 'View Code',
                                   onPressed: () =>
-                                      _launchUrl(widget.project.liveUrl!),
-                                  tooltip: 'Live Demo',
+                                      _launchUrl(widget.project.githubUrl!),
                                 ),
-                              ),
-                          ],
+                              if (widget.project.liveUrl != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16),
+                                  child: _buildActionButton(
+                                    icon: Icons.launch,
+                                    label: 'Live Demo',
+                                    onPressed: () =>
+                                        _launchUrl(widget.project.liveUrl!),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -93,7 +154,7 @@ class _ProjectCardState extends State<ProjectCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -133,6 +194,9 @@ class _ProjectCardState extends State<ProjectCard> {
                                 tech,
                                 style: GoogleFonts.poppins(
                                   fontSize: 12,
+                                  textBaseline: TextBaseline.ideographic,
+                                  height: 1.4,
+                                  letterSpacing: 0.5,
                                   fontWeight: FontWeight.w500,
                                   color: theme.primaryColor,
                                 ),

@@ -12,10 +12,16 @@ class ProjectsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 32),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SectionTitle(title: 'Projects'),
+          const SizedBox(height: 16),
+          Text(
+            'A showcase of my recent work and accomplishments',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
           const SizedBox(height: 32),
           SizedBox(
             width: ResponsiveUtils.getContentWidth(context),
