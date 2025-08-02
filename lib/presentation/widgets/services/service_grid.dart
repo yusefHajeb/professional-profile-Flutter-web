@@ -24,7 +24,7 @@ class ServiceGrid extends StatelessWidget {
         mainAxisSpacing: 24,
       ),
       itemCount: services.length,
-      itemBuilder: (context, i) => ServiceCard(service: services[i]),
+      itemBuilder: (context, i) => ServiceCard(service: services[i], index: i),
     );
   }
 }

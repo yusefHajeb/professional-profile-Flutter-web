@@ -15,8 +15,10 @@ class ServicesSection extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
+      width: ResponsiveUtils.getContentWidth(context),
+      padding: EdgeInsets.symmetric(
+          horizontal: ResponsiveUtils.getPadding(32),
+          vertical: ResponsiveUtils.getPadding(40)),
       decoration: BoxDecoration(
         color: Colors.grey[50],
         boxShadow: [
@@ -29,10 +31,13 @@ class ServicesSection extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const SectionTitle(title: 'Services'),
+          SectionTitle(
+            title: 'Services',
+            color: theme.colorScheme.surface,
+          ),
           const SizedBox(height: 16),
           AnimatedFadeIn(
-            delay: const Duration(milliseconds: 300),
+            delay: const Duration(milliseconds: 700),
             child: Text(
               'Specialized solutions to meet your digital needs',
               style: GoogleFonts.poppins(

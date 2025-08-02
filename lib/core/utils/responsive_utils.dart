@@ -24,7 +24,7 @@ class ResponsiveUtils {
     if (width > 1200) {
       return 1.1;
     } else if (width > 800) {
-      return 1.1;
+      return 0.9;
     }
     return 1.0;
   }

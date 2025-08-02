@@ -105,7 +105,7 @@ class ProjectDetails extends StatelessWidget {
           right: 0,
           child: Container(
             height: 100,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

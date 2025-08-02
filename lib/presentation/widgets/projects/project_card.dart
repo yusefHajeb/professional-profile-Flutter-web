@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:professional_profile/domain/entities/project.dart';
+import 'package:professional_profile/presentation/widgets/common/animated_fade_in.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProjectCard extends StatefulWidget {
@@ -119,8 +120,8 @@ class _ProjectCardState extends State<ProjectCard> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              theme.primaryColor.withOpacity(0.9),
-                              theme.primaryColor.withOpacity(0.7),
+                              theme.colorScheme.surface.withOpacity(0.9),
+                              theme.colorScheme.surface.withOpacity(0.7),
                             ],
                           ),
                         ),
@@ -129,20 +130,26 @@ class _ProjectCardState extends State<ProjectCard> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               if (widget.project.githubUrl != null)
-                                _buildActionButton(
-                                  icon: Icons.code,
-                                  label: 'View Code',
-                                  onPressed: () =>
-                                      _launchUrl(widget.project.githubUrl!),
+                                AnimatedFadeIn(
+                                  delay: const Duration(milliseconds: 300),
+                                  child: _buildActionButton(
+                                    icon: Icons.code,
+                                    label: 'View Code',
+                                    onPressed: () =>
+                                        _launchUrl(widget.project.githubUrl!),
+                                  ),
                                 ),
                               if (widget.project.liveUrl != null)
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: _buildActionButton(
-                                    icon: Icons.launch,
-                                    label: 'Live Demo',
-                                    onPressed: () =>
-                                        _launchUrl(widget.project.liveUrl!),
+                                AnimatedFadeIn(
+                                  delay: const Duration(milliseconds: 350),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: _buildActionButton(
+                                      icon: Icons.launch,
+                                      label: 'Live Demo',
+                                      onPressed: () =>
+                                          _launchUrl(widget.project.liveUrl!),
+                                    ),
                                   ),
                                 ),
                             ],
@@ -176,34 +183,84 @@ class _ProjectCardState extends State<ProjectCard> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 7,
-                    runSpacing: 8,
-                    children: widget.project.technologies
-                        .map((tech) => Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: theme.primaryColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: theme.primaryColor.withOpacity(0.2),
-                                ),
-                              ),
-                              child: Text(
-                                tech,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  textBaseline: TextBaseline.ideographic,
-                                  height: 1.4,
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w500,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                  ),
+                  // LayoutBuilder(builder: (context, constraints) {
+                  //   if (constraints.maxWidth > 1200) {
+                  //     return Wrap(
+                  //       spacing: 8,
+                  //       runSpacing: 4,
+                  //       children: widget.project.technologies
+                  //           .map((tech) => Container(
+                  //                 padding: const EdgeInsets.symmetric(
+                  //                     horizontal: 12, vertical: 6),
+                  //                 decoration: BoxDecoration(
+                  //                   color: theme.primaryColor.withOpacity(0.1),
+                  //                   borderRadius: BorderRadius.circular(20),
+                  //                   border: Border.all(
+                  //                     color:
+                  //                         theme.primaryColor.withOpacity(0.2),
+                  //                   ),
+                  //                 ),
+                  //                 child: Text(
+                  //                   tech,
+                  //                   style: GoogleFonts.poppins(
+                  //                     fontSize: 12,
+                  //                     textBaseline: TextBaseline.ideographic,
+                  //                     height: 1.4,
+                  //                     letterSpacing: 0.5,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     color: theme.primaryColor,
+                  //                   ),
+                  //                 ),
+                  //               ))
+                  //           .toList(),
+                  //     );
+                  //   } else {
+                  //     return ExpansionTile(
+                  //       initiallyExpanded: false,
+                  //       backgroundColor: Colors.transparent,
+                  //       collapsedBackgroundColor: Colors.transparent,
+                  //       visualDensity: VisualDensity.compact,
+                  //       tilePadding: EdgeInsets.zero,
+                  //       collapsedIconColor: theme.primaryColor,
+                  //       iconColor: theme.primaryColor,
+                  //       collapsedTextColor: theme.primaryColor,
+                  //       textColor: theme.primaryColor,
+                  //       title: Text(
+                  //         'Technologies Used',
+                  //         style: GoogleFonts.poppins(
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w600,
+                  //           color: theme.primaryColor,
+                  //         ),
+                  //       ),
+                  //       children: widget.project.technologies
+                  //           .map((tech) => Container(
+                  //                 padding: const EdgeInsets.symmetric(
+                  //                     horizontal: 12, vertical: 6),
+                  //                 decoration: BoxDecoration(
+                  //                   color: theme.primaryColor.withOpacity(0.1),
+                  //                   borderRadius: BorderRadius.circular(20),
+                  //                   border: Border.all(
+                  //                     color:
+                  //                         theme.primaryColor.withOpacity(0.2),
+                  //                   ),
+                  //                 ),
+                  //                 child: Text(
+                  //                   tech,
+                  //                   style: GoogleFonts.poppins(
+                  //                     fontSize: 12,
+                  //                     textBaseline: TextBaseline.ideographic,
+                  //                     height: 1.4,
+                  //                     letterSpacing: 0.5,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     color: theme.primaryColor,
+                  //                   ),
+                  //                 ),
+                  //               ))
+                  //           .toList(),
+                  //     );
+                  //   }
+                  // }),
                 ],
               ),
             ),

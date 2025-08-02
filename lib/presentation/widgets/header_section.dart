@@ -37,6 +37,9 @@ class _HeaderSectionState extends State<HeaderSection>
     final isWideScreen = MediaQuery.of(context).size.width > 800;
 
     return Stack(
+      // fit: StackFit.expand,
+      alignment: Alignment.topLeft,
+      clipBehavior: Clip.none,
       children: [
         Positioned.fill(
           child: CustomPaint(
@@ -76,7 +79,8 @@ class _HeaderSectionState extends State<HeaderSection>
                     ),
                     child: const CircleAvatar(
                       radius: 100,
-                      backgroundImage: AssetImage('assets/images/profile2.jpg'),
+                      backgroundImage:
+                          AssetImage('assets/images/my_picture.jpg'),
                     ),
                   ),
                 ),

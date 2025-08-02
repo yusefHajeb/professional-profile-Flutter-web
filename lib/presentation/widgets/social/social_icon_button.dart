@@ -38,14 +38,14 @@ class _SocialIconButtonState extends State<SocialIconButton> {
         onTap: _launchUrl,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: isHovered ? theme.primaryColor : Colors.white,
+            color: isHovered ? theme.colorScheme.surface : Colors.white,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
                 color: isHovered
-                    ? theme.primaryColor.withOpacity(0.3)
+                    ? theme.colorScheme.surface.withOpacity(0.3)
                     : Colors.black.withOpacity(0.1),
                 blurRadius: isHovered ? 16 : 8,
                 spreadRadius: isHovered ? 2 : 0,
@@ -57,14 +57,15 @@ class _SocialIconButtonState extends State<SocialIconButton> {
             children: [
               Icon(
                 widget.icon,
-                size: 32,
-                color: isHovered ? Colors.white : theme.primaryColor,
+                size: 24,
+                color: isHovered ? Colors.white : theme.colorScheme.surface,
               ),
               const SizedBox(height: 8),
               Text(
                 widget.label,
                 style: TextStyle(
-                  color: isHovered ? Colors.white : Colors.black87,
+                  color: isHovered ? Colors.white : theme.colorScheme.surface,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
               ),

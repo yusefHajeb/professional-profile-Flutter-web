@@ -11,6 +11,16 @@ class ProjectsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 32),
       child: Column(
@@ -20,7 +30,10 @@ class ProjectsSection extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'A showcase of my recent work and accomplishments',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 32),
           SizedBox(

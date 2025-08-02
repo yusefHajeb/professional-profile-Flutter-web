@@ -145,6 +145,9 @@ class _HomePageState extends State<HomePage> {
         body: Stack(
           children: [
             CustomScrollView(
+              anchor: 0.0,
+              physics: const BouncingScrollPhysics(),
+              primary: false,
               controller: scrollController,
               slivers: [
                 SliverToBoxAdapter(
@@ -162,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                 SliverToBoxAdapter(
                   child: KeyedSubtree(
                     key: experienceKey,
-                    child: ExperienceSection(),
+                    child: const ExperienceSection(),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -179,7 +182,82 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            _buildNavBar(isWideScreen),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: SafeArea(
+                child: Container(
+                  color: theme.colorScheme.surface.withOpacity(0.95),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundImage:
+                                  const AssetImage('assets/images/my_logo.jpg'),
+                              backgroundColor:
+                                  theme.colorScheme.secondary.withOpacity(0.2),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Yousef Hageb',
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (isWideScreen)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _NavItem(
+                              title: 'Home',
+                              isActive: _activeSection == 'Home',
+                              onTap: () => _scrollToSection(homeKey),
+                            ),
+                            _NavItem(
+                              title: 'Services',
+                              isActive: _activeSection == 'Services',
+                              onTap: () => _scrollToSection(servicesKey),
+                            ),
+                            _NavItem(
+                              title: 'Experience',
+                              isActive: _activeSection == 'Experience',
+                              onTap: () => _scrollToSection(experienceKey),
+                            ),
+                            _NavItem(
+                              title: 'Projects',
+                              isActive: _activeSection == 'Projects',
+                              onTap: () => _scrollToSection(projectsKey),
+                            ),
+                            _NavItem(
+                              title: 'Contact',
+                              isActive: _activeSection == 'Contact',
+                              onTap: () => _scrollToSection(contactKey),
+                            ),
+                            const SizedBox(width: 20),
+                          ],
+                        )
+                      else
+                        IconButton(
+                          icon: const Icon(Icons.menu, color: Colors.white),
+                          onPressed: () =>
+                              scaffoldKey.currentState?.openDrawer(),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -282,7 +360,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const CircleAvatar(
                     radius: 40,
-                    backgroundImage: AssetImage('assets/images/profile2.jpg'),
+                    backgroundImage: AssetImage('assets/images/my_picture.jpg'),
                   ),
                   const SizedBox(height: 10),
                   Text(

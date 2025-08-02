@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:professional_profile/domain/entities/experience.dart';
+import 'package:professional_profile/presentation/widgets/common/animated_fade_in.dart';
 import 'package:professional_profile/presentation/widgets/common/animated_fade_scale.dart';
 
 class ExperienceCard extends StatefulWidget {
@@ -52,17 +54,9 @@ class _ExperienceCardState extends State<ExperienceCard> {
           ),
           child: ExpansionTile(
             initiallyExpanded: widget.isFirst,
-            tilePadding: const EdgeInsets.all(16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            iconColor: theme.primaryColor,
-            collapsedIconColor: theme.primaryColor.withOpacity(0.7),
-            textColor: theme.primaryColor,
-            collapsedTextColor: theme.primaryColor.withOpacity(0.7),
-            backgroundColor: theme.cardColor,
-            collapsedBackgroundColor: theme.cardColor.withOpacity(0.9),
-            maintainState: true,
+            showTrailingIcon: false,
+
+            // textColor: theme.primaryColor,
             leading: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -79,9 +73,10 @@ class _ExperienceCardState extends State<ExperienceCard> {
             ),
             title: Text(
               widget.experience.companyName,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                color: theme.primaryColor,
+              style: GoogleFonts.poppins(
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
+                color: theme.primaryColor,
               ),
             ),
             children: widget.experience.positions
@@ -106,8 +101,10 @@ class _ExperienceCardState extends State<ExperienceCard> {
           color: theme.primaryColor.withOpacity(0.1),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           Row(
             children: [
@@ -115,8 +112,9 @@ class _ExperienceCardState extends State<ExperienceCard> {
               const SizedBox(width: 8),
               Text(
                 position.title,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                   color: theme.primaryColor,
                 ),
               ),
@@ -129,30 +127,53 @@ class _ExperienceCardState extends State<ExperienceCard> {
               const SizedBox(width: 8),
               Text(
                 position.duration,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.textTheme.bodySmall?.color,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: theme.primaryColor.withOpacity(0.7),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          ...position.responsibilities.map((responsibility) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.arrow_right,
-                        color: theme.primaryColor, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        responsibility,
-                        style: theme.textTheme.bodyMedium,
+          ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedFadeIn(
+                        delay: Duration(milliseconds: 100 * index),
+                        child: Icon(Icons.check_circle,
+                            color: theme.primaryColor, size: 20),
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                      const SizedBox(width: 8),
+                      AnimatedFadeIn(
+                        delay: Duration(milliseconds: 150 * index),
+                        child: Expanded(
+                          child: Text(
+                            position.responsibilities[index],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              height: 1.5,
+                              wordSpacing: 1.2,
+                              color: theme.primaryColor.withOpacity(0.8),
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              itemCount: position.responsibilities.length),
         ],
       ),
     );
