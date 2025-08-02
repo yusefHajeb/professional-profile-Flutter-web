@@ -18,7 +18,7 @@ class ServiceRepositoryImpl implements ServiceRepository {
         id: '2',
         title: 'Full-Stack Web Development',
         description:
-            'End-to-end web application development using modern technologies like React, Node.js, and MongoDB. '
+            'End-to-end web application development using modern technologies like Laravel , Node Js and Bootstrap '
             'Focus on creating scalable, secure, and maintainable solutions with excellent user experience.',
         iconName: 'web',
       ),

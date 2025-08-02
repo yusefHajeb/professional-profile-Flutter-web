@@ -14,7 +14,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
             'https://flutter.dev/docs/cookbook/img-files/effects/split-check/Food2.jpg',
         title: 'E-commerce Platform',
         description:
-            'A full-featured e-commerce platform with user authentication, product catalog, shopping cart, and payment integration.',
+            'Electricity Info is a Flutter application designed to track and analyze electricity consumption from generators and solar systems. The app provides users with detailed reports, including consumption metrics, diesel usage, and the ability to export reports as PDF files.',
         technologies: ['Flutter', 'Firebase', 'Stripe'],
         images: [
           'https://example.com/ecommerce1.jpg',
@@ -23,10 +23,10 @@ class ProjectRepositoryImpl implements ProjectRepository {
         ],
         keyFeatures: [
           'User authentication and profile management',
-          'Product search and filtering',
-          'Shopping cart and wishlist',
-          'Secure payment processing',
-          'Order tracking and history',
+          'Track electricity consumption from generators and solar systems.'
+              'Generate detailed reports based on date ranges.'
+              'Export reports to PDF format for easy sharing and printing.'
+              'User-friendly interface with date selection and summary views.'
         ],
         challengesAndSolutions:
             'One of the main challenges was implementing real-time inventory updates. We solved this by using Firebase Realtime Database to ensure that product availability is always up-to-date across all users.',

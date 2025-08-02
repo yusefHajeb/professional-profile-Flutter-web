@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:professional_profile/core/utils/responsive_utils.dart';
+import 'package:professional_profile/domain/entities/experience.dart';
 import 'package:professional_profile/presentation/bloc/experience_bloc.dart';
 import 'package:professional_profile/presentation/widgets/common/animated_fade_scale.dart';
 import 'package:professional_profile/presentation/widgets/common/section_title.dart';
@@ -29,71 +31,24 @@ class ExperienceSection extends StatelessWidget {
                 const SizedBox(height: 32),
                 LayoutBuilder(builder: (context, constraints) {
                   final isWideScreen = constraints.maxWidth > 800;
+                  final isTablet = constraints.maxWidth > 600;
+
                   return Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: isWideScreen ? 64 : 16,
+                      horizontal: isWideScreen ? 64 : (isTablet ? 32 : 16),
                     ),
                     child: Column(
                       children: [
-                        Text(
+                        const Text(
                           'A summary of my professional journey and key roles',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey[700],
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         const SizedBox(height: 32),
                         if (isWideScreen)
-                          GridView.count(
-                            crossAxisCount: 2,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            clipBehavior: Clip.none,
-                            mainAxisSpacing: 16,
-                            crossAxisSpacing: 16,
-                            semanticChildCount: state.experiences.length,
-                            // childAspectRatio: 1.5,
-                            children: List.generate(
-                              state.experiences.length,
-                              (index) => AnimatedFadeScale(
-                                duration: Duration(milliseconds: 100 * index),
-                                child: ExperienceCard(
-                                  experience: state.experiences[index],
-                                  isFirst: index == 0,
-                                  isLast: index == state.experiences.length - 1,
-                                ),
-                              ),
-                            ),
-                          )
+                          _buildGridLayout(context, state.experiences)
                         else
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: state.experiences.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ExperienceCard(
-                                    experience: state.experiences[index],
-                                    isFirst: index == 0,
-                                    isLast:
-                                        index == state.experiences.length - 1,
-                                  ),
-                                  if (index < state.experiences.length - 1)
-                                    TimelineConnector(
-                                      color: Theme.of(context).primaryColor,
-                                      isFirst: index == 0,
-                                      isLast:
-                                          index == state.experiences.length - 1,
-                                    ),
-                                ],
-                              );
-                            },
-                          ),
+                          _buildListLayout(context, state.experiences),
                       ],
                     ),
                   );
@@ -106,6 +61,63 @@ class ExperienceSection extends StatelessWidget {
         } else {
           return const SizedBox.shrink();
         }
+      },
+    );
+  }
+
+  Widget _buildGridLayout(BuildContext context, List<Experience> experiences) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 1000, // Maximum width for each item
+        mainAxisSpacing: 16,
+
+        crossAxisSpacing: 16,
+        childAspectRatio: 1, // Will be overridden by intrinsic height
+        mainAxisExtent: null, // Let children determine their own height
+      ),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: experiences.length,
+      itemBuilder: (context, index) {
+        return AnimatedFadeScale(
+          duration: Duration(milliseconds: 100 * (index + 1)),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: 200,
+              minWidth: 200,
+              maxWidth: (ResponsiveUtils.getContentWidth(context) / 2.3),
+              maxHeight: double.infinity,
+            ),
+            child: ExperienceCard(
+              experience: experiences[index],
+              isFirst: true,
+              isLast: index == experiences.length - 1,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildListLayout(BuildContext context, List<Experience> experiences) {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: experiences.length,
+      separatorBuilder: (context, index) => TimelineConnector(
+        color: Theme.of(context).primaryColor,
+        isFirst: index == 0,
+        isLast: index == experiences.length - 2,
+      ),
+      itemBuilder: (context, index) {
+        return AnimatedFadeScale(
+          duration: Duration(milliseconds: 100 * (index + 1)),
+          child: ExperienceCard(
+            experience: experiences[index],
+            isFirst: index == 0,
+            isLast: index == experiences.length - 1,
+          ),
+        );
       },
     );
   }

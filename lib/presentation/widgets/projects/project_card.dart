@@ -105,7 +105,7 @@ class _ProjectCardState extends State<ProjectCard> {
                   Image.asset(
                     widget.project.imageUrl,
                     fit: BoxFit.cover,
-                    height: 160,
+                    height: 140,
                     width: double.infinity,
                   ),
                   if (isHovered)
@@ -113,7 +113,7 @@ class _ProjectCardState extends State<ProjectCard> {
                       duration: const Duration(milliseconds: 200),
                       opacity: isHovered ? 1.0 : 0.0,
                       child: Container(
-                        height: 160,
+                        height: 140,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -162,8 +162,8 @@ class _ProjectCardState extends State<ProjectCard> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
                 children: [
                   Text(
                     widget.project.title,
@@ -173,7 +173,7 @@ class _ProjectCardState extends State<ProjectCard> {
                       color: theme.primaryColor,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
                   Text(
                     widget.project.description,
                     style: GoogleFonts.poppins(

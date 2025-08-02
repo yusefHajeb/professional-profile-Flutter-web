@@ -77,10 +77,33 @@ class _HeaderSectionState extends State<HeaderSection>
                         ),
                       ],
                     ),
-                    child: const CircleAvatar(
-                      radius: 100,
-                      backgroundImage:
-                          AssetImage('assets/images/my_picture.jpg'),
+                    child: Hero(
+                      tag: 'profileImage',
+                      flightShuttleBuilder: (
+                        BuildContext flightContext,
+                        Animation<double> animation,
+                        HeroFlightDirection flightDirection,
+                        BuildContext fromHeroContext,
+                        BuildContext toHeroContext,
+                      ) {
+                        return Material(
+                          color: Colors.transparent,
+                          child: ScaleTransition(
+                            scale: Tween<double>(begin: 0.0, end: 1.0).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.fastOutSlowIn,
+                              ),
+                            ),
+                            child: fromHeroContext.widget,
+                          ),
+                        );
+                      },
+                      child: const CircleAvatar(
+                        radius: 100,
+                        backgroundImage:
+                            AssetImage('assets/images/my_picture.jpg'),
+                      ),
                     ),
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:professional_profile/core/utils/responsive_utils.dart';
 import 'package:professional_profile/presentation/bloc/projects_bloc.dart';
 import 'package:professional_profile/presentation/widgets/common/section_title.dart';
@@ -30,10 +31,11 @@ class ProjectsSection extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'A showcase of my recent work and accomplishments',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[700],
-                  fontWeight: FontWeight.w600,
-                ),
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 32),
           SizedBox(

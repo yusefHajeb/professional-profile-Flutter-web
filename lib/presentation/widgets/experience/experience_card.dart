@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:professional_profile/domain/entities/experience.dart';
 import 'package:professional_profile/presentation/widgets/common/animated_fade_in.dart';
-import 'package:professional_profile/presentation/widgets/common/animated_fade_scale.dart';
 
 class ExperienceCard extends StatefulWidget {
   final Experience experience;
@@ -21,79 +20,147 @@ class ExperienceCard extends StatefulWidget {
 }
 
 class _ExperienceCardState extends State<ExperienceCard> {
-  bool isHovered = false;
+  bool _isHovered = false;
+  bool _isExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isExpanded = widget.isFirst;
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isMobile = MediaQuery.of(context).size.width < 600;
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => isHovered = true),
-      onExit: (_) => setState(() => isHovered = false),
-      child: AnimatedFadeScale(
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                theme.cardColor,
-                theme.cardColor.withOpacity(0.9),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: theme.primaryColor.withOpacity(isHovered ? 0.2 : 0.1),
-                blurRadius: isHovered ? 20 : 10,
-                spreadRadius: isHovered ? 5 : 0,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return MouseRegion(
+          onEnter: (_) => setState(() => _isHovered = true),
+          onExit: (_) => setState(() => _isHovered = false),
+          child: GestureDetector(
+            onTap: () => setState(() => _isExpanded = !_isExpanded),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: isMobile ? 8 : 16,
               ),
-            ],
-          ),
-          child: ExpansionTile(
-            initiallyExpanded: widget.isFirst,
-            showTrailingIcon: false,
-
-            // textColor: theme.primaryColor,
-            leading: Container(
-              padding: const EdgeInsets.all(8),
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+              ),
               decoration: BoxDecoration(
-                color: theme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    theme.cardColor,
+                    theme.cardColor.withOpacity(0.9),
+                  ],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        theme.primaryColor.withOpacity(_isHovered ? 0.2 : 0.1),
+                    blurRadius: _isHovered ? 20 : 10,
+                    spreadRadius: _isHovered ? 5 : 0,
+                  ),
+                ],
               ),
-              child: Image.network(
-                widget.experience.companyLogo,
-                width: 40,
-                height: 40,
-                errorBuilder: (context, error, stackTrace) =>
-                    Icon(Icons.business, size: 40, color: theme.primaryColor),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildHeader(theme, widget.experience, isMobile),
+                  if (_isExpanded)
+                    _buildPositionsList(widget.experience, theme, isMobile),
+                ],
               ),
             ),
-            title: Text(
-              widget.experience.companyName,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildHeader(ThemeData theme, Experience experience, bool isMobile) {
+    return Padding(
+      padding: EdgeInsets.all(isMobile ? 12.0 : 16.0),
+      child: Row(
+        children: [
+          _buildCompanyLogo(theme, experience),
+          SizedBox(width: isMobile ? 12 : 16),
+          Expanded(
+            child: Text(
+              experience.companyName,
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: isMobile ? 16 : 20,
                 fontWeight: FontWeight.bold,
                 color: theme.primaryColor,
               ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            children: widget.experience.positions
-                .map((position) => _buildPositionTile(context, position))
-                .toList(),
           ),
-        ),
+          Icon(
+            _isExpanded ? Icons.expand_less : Icons.expand_more,
+            color: theme.primaryColor,
+            size: isMobile ? 24 : 28,
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildPositionTile(BuildContext context, Position position) {
-    final theme = Theme.of(context);
+  Widget _buildCompanyLogo(ThemeData theme, Experience experience) {
+    final size = MediaQuery.of(context).size.width < 600 ? 32.0 : 40.0;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: theme.primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: experience.companyLogo.isNotEmpty
+          ? Image.network(
+              experience.companyLogo,
+              width: size,
+              height: size,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.business,
+                size: size,
+                color: theme.primaryColor,
+              ),
+            )
+          : Icon(
+              Icons.business,
+              size: size,
+              color: theme.primaryColor,
+            ),
+    );
+  }
+
+  Widget _buildPositionsList(
+      Experience experience, ThemeData theme, bool isMobile) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: isMobile ? 12.0 : 16.0),
+      child: Column(
+        children: experience.positions
+            .map((position) => _buildPositionTile(position, theme, isMobile))
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _buildPositionTile(Position position, ThemeData theme, bool isMobile) {
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: isMobile ? 8 : 16,
+        vertical: isMobile ? 4 : 8,
+      ),
+      padding: EdgeInsets.all(isMobile ? 12 : 16),
       decoration: BoxDecoration(
         color: theme.primaryColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
@@ -101,79 +168,116 @@ class _ExperienceCardState extends State<ExperienceCard> {
           color: theme.primaryColor.withOpacity(0.1),
         ),
       ),
-      child: ListView(
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        physics: const NeverScrollableScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(Icons.work_outline, color: theme.primaryColor, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                position.title,
+          _buildPositionHeader(position, theme, isMobile),
+          SizedBox(height: isMobile ? 4 : 8),
+          _buildPositionDuration(position, theme, isMobile),
+          SizedBox(height: isMobile ? 8 : 16),
+          _buildResponsibilitiesList(position, theme, isMobile),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPositionHeader(
+      Position position, ThemeData theme, bool isMobile) {
+    return Row(
+      children: [
+        Icon(
+          Icons.work_outline,
+          color: theme.primaryColor,
+          size: isMobile ? 16 : 20,
+        ),
+        SizedBox(width: isMobile ? 4 : 8),
+        Expanded(
+          child: Text(
+            position.title,
+            style: GoogleFonts.poppins(
+              fontSize: isMobile ? 14 : 18,
+              fontWeight: FontWeight.w600,
+              color: theme.primaryColor,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPositionDuration(
+      Position position, ThemeData theme, bool isMobile) {
+    return Row(
+      children: [
+        Icon(
+          Icons.calendar_today,
+          color: theme.primaryColor,
+          size: isMobile ? 14 : 16,
+        ),
+        SizedBox(width: isMobile ? 4 : 8),
+        Text(
+          position.duration,
+          style: GoogleFonts.poppins(
+            fontSize: isMobile ? 12 : 14,
+            color: theme.primaryColor.withOpacity(0.7),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildResponsibilitiesList(
+      Position position, ThemeData theme, bool isMobile) {
+    return Column(
+      children: position.responsibilities
+          .asMap()
+          .entries
+          .map((entry) => _buildResponsibilityItem(
+                entry.key,
+                entry.value,
+                theme,
+                isMobile,
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _buildResponsibilityItem(
+    int index,
+    String responsibility,
+    ThemeData theme,
+    bool isMobile,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AnimatedFadeIn(
+            delay: Duration(milliseconds: 100 * index),
+            child: Icon(
+              Icons.check_circle,
+              color: theme.primaryColor,
+              size: isMobile ? 16 : 20,
+            ),
+          ),
+          SizedBox(width: isMobile ? 4 : 8),
+          Flexible(
+            child: AnimatedFadeIn(
+              delay: Duration(milliseconds: 150 * index),
+              child: Text(
+                responsibility,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: theme.primaryColor,
+                  fontSize: isMobile ? 12 : 14,
+                  height: 1.5,
+                  wordSpacing: 1.2,
+                  color: theme.primaryColor.withOpacity(0.8),
                 ),
               ),
-            ],
+            ),
           ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.calendar_today, color: theme.primaryColor, size: 16),
-              const SizedBox(width: 8),
-              Text(
-                position.duration,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: theme.primaryColor.withOpacity(0.7),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AnimatedFadeIn(
-                        delay: Duration(milliseconds: 100 * index),
-                        child: Icon(Icons.check_circle,
-                            color: theme.primaryColor, size: 20),
-                      ),
-                      const SizedBox(width: 8),
-                      AnimatedFadeIn(
-                        delay: Duration(milliseconds: 150 * index),
-                        child: Expanded(
-                          child: Text(
-                            position.responsibilities[index],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              height: 1.5,
-                              wordSpacing: 1.2,
-                              color: theme.primaryColor.withOpacity(0.8),
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              itemCount: position.responsibilities.length),
         ],
       ),
     );

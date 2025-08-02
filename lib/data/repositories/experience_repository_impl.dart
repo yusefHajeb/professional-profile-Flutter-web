@@ -4,43 +4,43 @@ import 'package:professional_profile/domain/repositories/experience_repository.d
 class ExperienceRepositoryImpl extends ExperienceRepository {
   @override
   Future<List<Experience>> getExperiences() async {
-    // Simulating API call
     await Future.delayed(const Duration(seconds: 1));
 
     return [
       Experience(
-        companyName: 'Tech Solutions Inc.',
+        companyName: 'Rafal Store',
         companyLogo: 'https://example.com/tech_solutions_logo.png',
         positions: [
           Position(
-            title: 'Senior Software Engineer',
-            duration: 'Jan 2020 - Present',
+            title: 'Full-Stack Mobile Developer | Flutter -Laravel',
+            duration: 'Feb 2025 - Jul 2025',
             responsibilities: [
-              'Lead development of cloud-based applications',
-              'Mentor junior developers and conduct code reviews',
-              'Implement CI/CD pipelines for streamlined deployments',
+              'Architect, develop, and maintain full-stack features, from design to production.',
+              'Design and develop RESTful APIs & third-party integrations.',
+              'Integrate front-end components with backend APIs and data services.',
             ],
           ),
           Position(
-            title: 'Software Engineer',
-            duration: 'Jun 2018 - Dec 2019',
+            title: 'Flutter Developer',
+            duration: 'Sep 2023 - Feb 2025',
             responsibilities: [
-              'Developed and maintained web applications using React and Node.js',
-              'Collaborated with cross-functional teams to deliver high-quality software',
-              'Optimized database queries for improved performance',
+              'Contribute to building and developing an ERP system that streamlined sales and delivery workflows, accelerating task completion by 90% and improving data accuracy.',
+              'Assisted in creating a dynamic application that served as a semi-integrated system, delivered in a short time frame.',
+              'Developed an application to manage order production processes and automate tasks, enhancing the sales and delivery process.',
+              'Created a custom UI/UX design for the mobile application.'
             ],
           ),
         ],
       ),
       Experience(
-        companyName: 'Innovative Startup',
+        companyName: 'Self-',
         companyLogo: 'https://example.com/innovative_startup_logo.png',
         positions: [
           Position(
-            title: 'Full Stack Developer',
-            duration: 'Sep 2016 - May 2018',
+            title: 'Flutter Freelancer Developer ',
+            duration: 'Feb 2023 - Sep 2023',
             responsibilities: [
-              'Built and launched MVP for a social media analytics platform',
+              'Implemented Firebase backend for user data management and analytics',
               'Implemented RESTful APIs using Django and PostgreSQL',
               'Integrated third-party services for data processing and visualization',
             ],
